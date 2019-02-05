@@ -1,0 +1,45 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09", 
+    "Outputs": {
+        "ImageScannerPhysicalId": {
+            "Value": {
+                "Ref": "ImageScanner"
+            }
+        }
+    }, 
+    "Transform": "AWS::Serverless-2016-10-31", 
+    "Resources": {
+        "ImageScanner": {
+            "Type": "Custom::ImageScanner", 
+            "Properties": {
+                "EventID": "", 
+                "Region": {
+                    "Ref": "AWS::Region"
+                }, 
+                "Tags": "", 
+                "Threshold": "", 
+                "Image": "", 
+                "ServiceToken": {
+                    "Fn::GetAtt": [
+                        "ExampleResource", 
+                        "Arn"
+                    ]
+                }, 
+                "SNSFailure": ""
+            }
+        }, 
+        "ExampleResource": {
+            "Type": "AWS::Serverless::Function", 
+            "Properties": {
+                "CodeUri": "s3://source.ap-southeast-2.zac.base2services.com/lambda/image-scanner/462256f507a1477ef35d74f2cdcfe725", 
+                "Runtime": "go1.x", 
+                "Handler": "handler.Handle", 
+                "Policies": [
+                    "AWSLambdaBasicExecutionRole"
+                ], 
+                "Timeout": 60
+            }
+        }
+    }, 
+    "Description": "Image Scanner Custom Resource"
+}

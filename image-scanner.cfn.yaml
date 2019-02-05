@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+
+Description: Image Scanner Custom Resource
+
+Outputs:
+  ImageScannerPhysicalId:
+    Value: !Ref ImageScanner
+
+Resources:
+  ExampleResource:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: image-scanner.zip
+      Handler: handler.Handle
+      Runtime: go1.x
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Timeout: 60 #seconds
+
+  ImageScanner:
+    Type: Custom::ImageScanner
+    Properties:
+      ServiceToken: !GetAtt ExampleResource.Arn
+      Region: !Ref 'AWS::Region'
+      SNSFailure: ''
+      Image: ''
+      Tags: ''
+      Threshold: ''
+      EventID: ''
+
