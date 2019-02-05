@@ -10,17 +10,17 @@ import (
 
 var store = make(map[string][]*clair.Vulnerability)
 
-func main() {
+func klar(remoteImage *string) {
 	fail := func(format string, a ...interface{}) {
 		fmt.Fprintf(os.Stderr, fmt.Sprintf("%s\n", format), a...)
 		os.Exit(2)
 	}
 
-	if len(os.Args) != 2 {
+	if len(*remoteImage) != 0 {
 		fail("Image name must be provided")
 	}
 
-	conf, err := newConfig(os.Args)
+	conf, err := newConfig(remoteImage)
 	if err != nil {
 		fail("Invalid options: %s", err)
 	}

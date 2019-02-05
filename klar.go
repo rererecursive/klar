@@ -128,7 +128,7 @@ type config struct {
 	IgnoreUnfixed bool
 }
 
-func newConfig(args []string) (*config, error) {
+func newConfig(image *string) (*config, error) {
 	clairAddr := os.Getenv(optionClairAddress)
 	if clairAddr == "" {
 		return nil, fmt.Errorf("Clair address must be provided\n")
@@ -168,7 +168,7 @@ func newConfig(args []string) (*config, error) {
 		ClairTimeout:  time.Duration(clairTimeout) * time.Minute,
 		WhiteListFile: os.Getenv(optionWhiteListFile),
 		DockerConfig: docker.Config{
-			ImageName:        args[1],
+			ImageName:        *image,
 			User:             os.Getenv(optionDockerUser),
 			Password:         os.Getenv(optionDockerPassword),
 			Token:            os.Getenv(optionDockerToken),
